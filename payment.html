@@ -13,8 +13,21 @@
         .order-summary {
             background-color: #f8f9fa;
             padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .order-summary hr {
+            margin: 15px 0;
+        }
+        
+        #order-items {
+            margin-bottom: 15px;
+        }
+        
+        #order-total {
+            font-weight: bold;
+            color: #212529;
         }
     </style>
 </head>
@@ -31,53 +44,55 @@
             <h2 class="text-center mb-4">Makse andmed</h2>
             
             <!-- Order Summary -->
-            <div class="order-summary">
-                <h4>Tellimuse kokkuvõte</h4>
-                <div id="order-items"></div>
+            <div class="order-summary mb-4">
+                <h4 class="mb-3">Tellimuse kokkuvõte</h4>
+                <div id="order-items">
+                    <!-- Cart items will be displayed here -->
+                </div>
                 <hr>
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
                     <strong>Kokku:</strong>
-                    <span id="order-total"></span>
+                    <span class="h5 mb-0" id="order-total">€0.00</span>
                 </div>
             </div>
 
             <!-- Payment Form -->
-            <form id="payment-form" onsubmit="return handleSubmit(event)">
+            <form id="payment-form" onsubmit="return validateAndSubmit(event)">
                 <!-- Personal Information -->
                 <h5 class="mb-3">Isiklikud andmed</h5>
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="form-label">Eesnimi</label>
-                        <input type="text" class="form-control" required>
+                        <input type="text" class="form-control" required name="firstName">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Perekonnanimi</label>
-                        <input type="text" class="form-control" required>
+                        <input type="text" class="form-control" required name="lastName">
                     </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input type="email" class="form-control" required>
+                    <input type="email" class="form-control" required name="email">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Telefon</label>
-                    <input type="tel" class="form-control" required>
+                    <input type="tel" class="form-control" required name="phone">
                 </div>
 
                 <!-- Shipping Address -->
                 <h5 class="mb-3">Tarneaadress</h5>
                 <div class="mb-3">
                     <label class="form-label">Tänav</label>
-                    <input type="text" class="form-control" required>
+                    <input type="text" class="form-control" required name="street">
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="form-label">Linn</label>
-                        <input type="text" class="form-control" required>
+                        <input type="text" class="form-control" required name="city">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Postiindeks</label>
-                        <input type="text" class="form-control" required>
+                        <input type="text" class="form-control" required name="zipCode">
                     </div>
                 </div>
 
@@ -85,16 +100,16 @@
                 <h5 class="mb-3">Kaardi andmed</h5>
                 <div class="mb-3">
                     <label class="form-label">Kaardi number</label>
-                    <input type="text" class="form-control" required pattern="\d{16}" placeholder="1234 5678 9012 3456">
+                    <input type="text" class="form-control" required name="cardNumber" pattern="\d{16}" placeholder="1234 5678 9012 3456">
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="form-label">Aegumiskuupäev</label>
-                        <input type="text" class="form-control" required pattern="\d{2}/\d{2}" placeholder="MM/YY">
+                        <input type="text" class="form-control" required name="expDate" pattern="\d{2}/\d{2}" placeholder="MM/YY">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">CVV</label>
-                        <input type="text" class="form-control" required pattern="\d{3}" placeholder="123">
+                        <input type="text" class="form-control" required name="cvv" pattern="\d{3}" placeholder="123">
                     </div>
                 </div>
 
@@ -104,71 +119,108 @@
     </div>
 
     <script>
-        // Load cart data from localStorage
+        // Load and display cart contents
         window.onload = function() {
-            const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-            const cartTotal = localStorage.getItem('cartTotal');
-            
-            // Display order summary
-            const orderItems = document.getElementById('order-items');
-            cartItems.forEach(item => {
-                orderItems.innerHTML += `
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>${item.name} x ${item.quantity}</span>
-                        <span>€${(item.price * item.quantity).toFixed(2)}</span>
-                    </div>
-                `;
-            });
-            
-            document.getElementById('order-total').textContent = `€${parseFloat(cartTotal).toFixed(2)}`;
+            displayCartItems();
         };
 
-        function handleSubmit(event) {
-            event.preventDefault();
+        function displayCartItems() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const orderItems = document.getElementById('order-items');
+            const orderTotal = document.getElementById('order-total');
             
-            if (!validateForm()) {
-                return false;
-            }
-
-            // Show loading state
-            const submitButton = event.target.querySelector('button[type="submit"]');
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Töötleb...';
-
-            // Simulate payment processing
-            setTimeout(() => {
-                // Clear cart data
-                localStorage.removeItem('cartItems');
+            // Clear existing content
+            orderItems.innerHTML = '';
+            
+            if (cart.length === 0) {
+                orderItems.innerHTML = '<div class="text-center text-muted">Ostukorv on tühi</div>';
+                orderTotal.textContent = '€0.00';
+            } else {
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    orderItems.innerHTML += `
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="fw-bold">${item.name}</span>
+                                <br>
+                                <small class="text-muted">€${item.price.toFixed(2)} × ${item.quantity}</small>
+                            </div>
+                            <span>€${itemTotal.toFixed(2)}</span>
+                        </div>
+                    `;
+                });
                 
-                // Redirect to success page
-                window.location.href = 'success.html';
-            }, 1500);
-
-            return false;
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                orderTotal.textContent = `€${total.toFixed(2)}`;
+            }
         }
 
-        function validateForm() {
-            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
-            const expDate = document.getElementById('expDate').value;
-            const cvv = document.getElementById('cvv').value;
+        function validateAndSubmit(event) {
+            event.preventDefault();
+            
+            // Get all form inputs
+            const firstName = document.querySelector('input[name="firstName"]').value.trim();
+            const lastName = document.querySelector('input[name="lastName"]').value.trim();
+            const email = document.querySelector('input[name="email"]').value.trim();
+            const phone = document.querySelector('input[name="phone"]').value.trim();
+            const street = document.querySelector('input[name="street"]').value.trim();
+            const city = document.querySelector('input[name="city"]').value.trim();
+            const zipCode = document.querySelector('input[name="zipCode"]').value.trim();
+            const cardNumber = document.querySelector('input[name="cardNumber"]').value.replace(/\s/g, '');
+            const expDate = document.querySelector('input[name="expDate"]').value.trim();
+            const cvv = document.querySelector('input[name="cvv"]').value.trim();
 
-            if (cardNumber.length !== 16) {
-                alert('Palun sisesta kehtiv kaardi number');
+            // Check if cart is empty
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            if (cart.length === 0) {
+                alert('Teie ostukorv on tühi');
                 return false;
             }
 
-            const [month, year] = expDate.split('/');
-            if (!month || !year || month > 12 || month < 1) {
-                alert('Palun sisesta kehtiv aegumiskuupäev');
+            // Validate all fields are filled
+            if (!firstName || !lastName || !email || !phone || !street || !city || 
+                !zipCode || !cardNumber || !expDate || !cvv) {
+                alert('Palun täitke kõik väljad');
                 return false;
             }
 
-            if (cvv.length !== 3) {
-                alert('Palun sisesta kehtiv CVV');
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Palun sisestage korrektne e-posti aadress');
                 return false;
             }
 
-            return true;
+            // Validate phone number
+            const phoneRegex = /^\+?[\d\s-]{8,}$/;
+            if (!phoneRegex.test(phone)) {
+                alert('Palun sisestage korrektne telefoninumber');
+                return false;
+            }
+
+            // Validate card number
+            if (cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
+                alert('Palun sisestage korrektne 16-numbriline kaardinumber');
+                return false;
+            }
+
+            // Validate expiration date
+            const expRegex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+            if (!expRegex.test(expDate)) {
+                alert('Palun sisestage korrektne aegumiskuupäev (MM/YY)');
+                return false;
+            }
+
+            // Validate CVV
+            if (cvv.length !== 3 || !/^\d+$/.test(cvv)) {
+                alert('Palun sisestage korrektne 3-numbriline CVV kood');
+                return false;
+            }
+
+            // If all validations pass
+            localStorage.removeItem('cart'); // Clear the cart
+            window.location.href = 'success.html'; // Redirect to success page
+            return false;
         }
     </script>
 

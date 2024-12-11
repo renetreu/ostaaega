@@ -5,40 +5,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OstaAega</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <style>
         .product-card {
+            height: 600px;
             border: 1px solid #ddd;
-            padding: 15px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-image-container {
+            width: 100%;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 20px;
+            overflow: hidden;
         }
         .product-image {
-            max-width: 100%;
-            height: auto;
+            width: 400px;
+            height: 400px;
+            object-fit: contain;
+        }
+        .product-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .product-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .product-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .product-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .offcanvas {
+            max-width: 350px;
+        }
+        
+        .cart-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+        
+        .cart-count {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        .cart-dropdown {
+            width: 300px;
+            padding: 0;
+        }
+        
+        .cart-items {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .cart-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item-title {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .cart-item-price {
+            font-size: 0.8rem;
+            color: #666;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation with cart -->
+    <!-- Navigation with functional cart dropdown -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="index.html">OstaAega</a>
-            <div class="d-flex align-items-center">
-                <div class="dropdown me-2">
-                    <a class="nav-link text-white cart-icon" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-count">0</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end cart-dropdown">
-                        <div id="cart-items-dropdown">
-                            <!-- Cart items will be dynamically added here -->
-                        </div>
-                        <div class="d-flex justify-content-between p-2 border-top">
-                            <strong>Kokku:</strong>
-                            <span id="cart-total-dropdown">€0.00</span>
-                        </div>
-                        <div class="d-grid gap-2 p-2">
-                            <a href="payment.html" class="btn btn-primary w-100">Mine maksma</a>
-                        </div>
+            <div class="dropdown">
+                <button class="btn btn-link text-white position-relative" type="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-cart3" style="font-size: 1.2rem;"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
+                        0
+                    </span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end cart-dropdown">
+                    <div id="cartItems" class="cart-items">
+                        <!-- Cart items will be added here dynamically -->
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div class="d-flex justify-content-between p-3">
+                        <strong>Kokku:</strong>
+                        <span id="cartTotal">€0.00</span>
+                    </div>
+                    <div class="p-2">
+                        <a href="payment.html" class="btn btn-primary w-100">Maksa</a>
                     </div>
                 </div>
             </div>
@@ -60,232 +144,227 @@
             <!-- Product 1 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="product 1.jpg" alt="" class="product-image">
-                    <h3>Rolex Submariner Date</h3>
-                    <p>Mudeli number 126610LN
-                        
-                    </p>
-                    <p class="fw-bold">€99.99</p>
-                    <button class="btn btn-primary">Lisa ostukorvi</button>
+                    <div class="product-image-container">
+                        <img src="product 1.jpg" alt="" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Rolex Submariner Date</h3>
+                        <p class="product-description">Mudeli number 126610LN</p>
+                        <p class="product-price fw-bold">€99.99</p>
+                        <button class="btn btn-primary">Lisa ostukorvi</button>
+                    </div>
                 </div>
             </div>
             <!-- Product 2 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="product 2.jpg" alt="Toode 2" class="product-image">
-                    <h3>AP Royal Oak Automatic</h3>
-                    <p>Mudeli number 15400ST.OO.1220ST.01</p>
-                    <p class="fw-bold">€149.99</p>
-                    <button class="btn btn-primary">Lisa ostukorvi</button>
+                    <div class="product-image-container">
+                        <img src="product 2.jpg" alt="Toode 2" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">AP Royal Oak Automatic</h3>
+                        <p class="product-description">Mudeli number 15400ST.OO.1220ST.01</p>
+                        <p class="product-price fw-bold">€149.99</p>
+                        <button class="btn btn-primary">Lisa ostukorvi</button>
+                    </div>
                 </div>
             </div>
             <!-- Product 3 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="product 3.jpg" alt="Toode 3" class="product-image">
-                    <h3>Patek Philippe Nautilus</h3>
-                    <p>Mudeli number 5711/1A-001</p>
-                    <p class="fw-bold">€199.99</p>
-                    <button class="btn btn-primary">Lisa ostukorvi</button>
+                    <div class="product-image-container">
+                        <img src="product 3.jpg" alt="Toode 3" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Patek Philippe Nautilus</h3>
+                        <p class="product-description">Mudeli number 5711/1A-001</p>
+                        <p class="product-price fw-bold">€199.99</p>
+                        <button class="btn btn-primary">Lisa ostukorvi</button>
+                    </div>
                 </div>
             </div>
             <!-- Product 4 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="product 4.jpg" alt="Toode 4" class="product-image">
-                    <h3>Richard Mille Tourbillon</h3>
-                    <p>Mudeli number RM 47</p>
-                    <p class="fw-bold">€129.99</p>
-                    <button class="btn btn-primary">Lisa ostukorvi</button>
+                    <div class="product-image-container">
+                        <img src="product 4.jpg" alt="Toode 4" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Richard Mille Tourbillon</h3>
+                        <p class="product-description">Mudeli number RM 47</p>
+                        <p class="product-price fw-bold">€129.99</p>
+                        <button class="btn btn-primary">Lisa ostukorvi</button>
+                    </div>
                 </div>
             </div>
             <!-- Product 5 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="product 5.jpg" alt="Toode 5" class="product-image">
-                    <h3>Omega Seamaster Diver 300M</h3>
-                    <p>Mudeli number 210.30.42.20.03.001</p>
-                    <p class="fw-bold">€179.99</p>
-                    <button class="btn btn-primary">Lisa ostukorvi</button>
+                    <div class="product-image-container">
+                        <img src="product 5.jpg" alt="Toode 5" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Omega Seamaster Diver 300M</h3>
+                        <p class="product-description">Mudeli number 210.30.42.20.03.001</p>
+                        <p class="product-price fw-bold">€179.99</p>
+                        <button class="btn btn-primary">Lisa ostukorvi</button>
+                    </div>
                 </div>
             </div>
             <!-- Product 6 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="product 6.jpg" alt="Toode 6" class="product-image">
-                    <h3>Breitling Navitimer B01 Chronograph</h3>
-                    <p>Mudeli number AB0127211C1A1</p>
-                    <p class="fw-bold">€159.99</p>
-                    <button class="btn btn-primary">Lisa ostukorvi</button>
+                    <div class="product-image-container">
+                        <img src="product 6.jpg" alt="Toode 6" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Breitling Navitimer B01 Chronograph</h3>
+                        <p class="product-description">Mudeli number AB0127211C1A1</p>
+                        <p class="product-price fw-bold">€159.99</p>
+                        <button class="btn btn-primary">Lisa ostukorvi</button>
+                    </div>
                 </div>
             </div>
             <!-- Product 7 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="product 7.jpg" alt="Toode 7" class="product-image">
-                    <h3>Omega Constellation</h3>
-                    <p>Mudeli number 131.10.39.20.01.001</p>
-                    <p class="fw-bold">€89.99</p>
-                    <button class="btn btn-primary">Lisa ostukorvi</button>
+                    <div class="product-image-container">
+                        <img src="product 7.jpg" alt="Toode 7" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Omega Constellation</h3>
+                        <p class="product-description">Mudeli number 131.10.39.20.01.001</p>
+                        <p class="product-price fw-bold">€89.99</p>
+                        <button class="btn btn-primary">Lisa ostukorvi</button>
+                    </div>
                 </div>
             </div>
             <!-- Product 8 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="product 8.jpg" alt="Toode 8" class="product-image">
-                    <h3>Breitling Superocean Heritage</h3>
-                    <p>Mudeli number AB2020161C1A1</p>
-                    <p class="fw-bold">€139.99</p>
-                    <button class="btn btn-primary">Lisa ostukorvi</button>
+                    <div class="product-image-container">
+                        <img src="product 8.jpg" alt="Toode 8" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Breitling Superocean Heritage</h3>
+                        <p class="product-description">Mudeli number AB2020161C1A1</p>
+                        <p class="product-price fw-bold">€139.99</p>
+                        <button class="btn btn-primary">Lisa ostukorvi</button>
+                    </div>
                 </div>
             </div>
             <!-- Product 9 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="product 9.jpg" alt="Toode 9" class="product-image">
-                    <h3>Omega De Ville Prestige</h3>
-                    <p>Mudeli number 424.13.40.20.02.001</p>
-                    <p class="fw-bold">€169.99</p>
-                    <button class="btn btn-primary">Lisa ostukorvi</button>
+                    <div class="product-image-container">
+                        <img src="product 9.jpg" alt="Toode 9" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Omega De Ville Prestige</h3>
+                        <p class="product-description">Mudeli number 424.13.40.20.02.001</p>
+                        <p class="product-price fw-bold">€169.99</p>
+                        <button class="btn btn-primary">Lisa ostukorvi</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Cart Section -->
-    <div class="container my-5" id="cart">
-        <h2 class="text-center mb-4">Ostukorv</h2>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Toode</th>
-                        <th>Hind</th>
-                        <th>Kogus</th>
-                        <th>Kokku</th>
-                        <th>Tegevus</th>
-                    </tr>
-                </thead>
-                <tbody id="cart-items">
-                    <!-- Cart items will be added here dynamically -->
-                </tbody>
-            </table>
-        </div>
-        <div class="text-end">
-            <h4>Kokku: €<span id="cart-total">0.00</span></h4>
-            <button class="btn btn-success" id="checkout-btn">Mine maksma</button>
-        </div>
-    </div>
+   
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-4">
         <div class="container text-center">
-            <p>&copy; 2023 OstaAega. Kõik õigused kaitstud.</p>
+            <p>&copy; 2024 OstaAega. Kõik õigused kaitstud.</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Cart state
         let cart = [];
-
-        // Add to cart functionality
-        document.querySelectorAll('.btn-primary').forEach(button => {
-            button.addEventListener('click', function() {
-                const product = this.parentElement;
-                const productName = product.querySelector('h3').textContent;
-                const productPrice = parseFloat(product.querySelector('.fw-bold').textContent.replace('€', ''));
-                
-                // Check if product is already in cart
-                const existingItem = cart.find(item => item.name === productName);
-                
-                if (existingItem) {
-                    existingItem.quantity += 1;
-                } else {
-                    cart.push({
-                        name: productName,
-                        price: productPrice,
-                        quantity: 1
-                    });
-                }
-                
-                updateCartDisplay();
-                
-                // Show feedback to user
-                const toast = document.createElement('div');
-                toast.className = 'alert alert-success position-fixed top-0 end-0 m-3';
-                toast.innerHTML = `${productName} lisatud ostukorvi!`;
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 2000);
-            });
-        });
-
-        // Update cart display
-        function updateCartDisplay() {
-            const cartItems = document.getElementById('cart-items');
-            const cartTotal = document.getElementById('cart-total');
+        
+        function addToCart(name, price) {
+            const existingItem = cart.find(item => item.name === name);
             
-            // Clear current items
-            cartItems.innerHTML = '';
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: name,
+                    price: price,
+                    quantity: 1
+                });
+            }
             
-            // Add each item to the cart
-            cart.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.name}</td>
-                    <td>€${item.price.toFixed(2)}</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary me-2" onclick="updateQuantity('${item.name}', -1)">-</button>
-                        ${item.quantity}
-                        <button class="btn btn-sm btn-secondary ms-2" onclick="updateQuantity('${item.name}', 1)">+</button>
-                    </td>
-                    <td>€${(item.price * item.quantity).toFixed(2)}</td>
-                    <td>
-                        <button class="btn btn-sm btn-danger" onclick="removeItem('${item.name}')">
-                            Eemalda
-                        </button>
-                    </td>
-                `;
-                cartItems.appendChild(row);
-            });
+            updateCart();
+            saveCart();
+        }
+        
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const cartCount = document.querySelector('.cart-count');
+            
+            // Update cart count
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            cartCount.style.display = totalItems > 0 ? 'block' : 'none';
+            
+            // Update cart items
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="p-3 text-center">Ostukorv on tühi</div>';
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <div class="cart-item-title">${item.name}</div>
+                                <div class="cart-item-price">€${item.price} × ${item.quantity}</div>
+                            </div>
+                            <button onclick="removeFromCart('${item.name}')" class="btn btn-sm btn-danger">×</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
             
             // Update total
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            cartTotal.textContent = total.toFixed(2);
+            cartTotal.textContent = `€${total.toFixed(2)}`;
         }
-
-        // Update item quantity
-        function updateQuantity(productName, change) {
-            const item = cart.find(item => item.name === productName);
-            if (item) {
-                item.quantity += change;
-                if (item.quantity <= 0) {
-                    removeItem(productName);
-                } else {
-                    updateCartDisplay();
-                }
+        
+        function removeFromCart(name) {
+            cart = cart.filter(item => item.name !== name);
+            updateCart();
+            saveCart();
+        }
+        
+        // Save cart to localStorage
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+        
+        // Load cart from localStorage
+        function loadCart() {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCart();
             }
-
         }
-
-        // Remove item from cart
-        function removeItem(productName) {
-            cart = cart.filter(item => item.name !== productName);
-            updateCartDisplay();
-        }
-
-        // Checkout button
-        document.getElementById('checkout-btn').addEventListener('click', function() {
-            if (cart.length === 0) {
-                alert('Ostukorv on tühi!');
-                return;
-            }
-            
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            alert(`Tellimus esitatud! Kogusumma: €${total.toFixed(2)}`);
-            cart = [];
-            updateCartDisplay();
+        
+        // Add click handlers to all "Lisa ostukorvi" buttons
+        document.querySelectorAll('.btn-primary').forEach(button => {
+            button.addEventListener('click', function() {
+                const product = this.closest('.product-card');
+                const name = product.querySelector('h3').textContent;
+                const price = parseFloat(product.querySelector('.fw-bold').textContent.replace('€', ''));
+                
+                addToCart(name, price);
+            });
         });
+        
+        // Initialize cart
+        document.addEventListener('DOMContentLoaded', loadCart);
     </script>
 </body>
 </html>
