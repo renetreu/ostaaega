@@ -18,22 +18,29 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Navigation with cart -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="index.html">OstaAega</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#products">Tooted</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#cart">Ostukorv</a>
-                    </li>
-                </ul>
+            <div class="d-flex align-items-center">
+                <div class="dropdown me-2">
+                    <a class="nav-link text-white cart-icon" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end cart-dropdown">
+                        <div id="cart-items-dropdown">
+                            <!-- Cart items will be dynamically added here -->
+                        </div>
+                        <div class="d-flex justify-content-between p-2 border-top">
+                            <strong>Kokku:</strong>
+                            <span id="cart-total-dropdown">€0.00</span>
+                        </div>
+                        <div class="d-grid gap-2 p-2">
+                            <a href="payment.html" class="btn btn-primary w-100">Mine maksma</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
@@ -53,9 +60,11 @@
             <!-- Product 1 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="C:\Users\rennu\OneDrive\Documents\veebidisain\product 1.jpg" alt="Toode 1" class="product-image">
-                    <h3>Toode 1</h3>
-                    <p>Toote 1 kirjeldus</p>
+                    <img src="product 1.jpg" alt="" class="product-image">
+                    <h3>Rolex Submariner Date</h3>
+                    <p>Mudeli number 126610LN
+                        
+                    </p>
                     <p class="fw-bold">€99.99</p>
                     <button class="btn btn-primary">Lisa ostukorvi</button>
                 </div>
@@ -63,9 +72,9 @@
             <!-- Product 2 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="images/product2.jpg" alt="Toode 2" class="product-image">
-                    <h3>Toode 2</h3>
-                    <p>Toote 2 kirjeldus</p>
+                    <img src="product 2.jpg" alt="Toode 2" class="product-image">
+                    <h3>AP Royal Oak Automatic</h3>
+                    <p>Mudeli number 15400ST.OO.1220ST.01</p>
                     <p class="fw-bold">€149.99</p>
                     <button class="btn btn-primary">Lisa ostukorvi</button>
                 </div>
@@ -73,9 +82,9 @@
             <!-- Product 3 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="images/product3.jpg" alt="Toode 3" class="product-image">
-                    <h3>Toode 3</h3>
-                    <p>Toote 3 kirjeldus</p>
+                    <img src="product 3.jpg" alt="Toode 3" class="product-image">
+                    <h3>Patek Philippe Nautilus</h3>
+                    <p>Mudeli number 5711/1A-001</p>
                     <p class="fw-bold">€199.99</p>
                     <button class="btn btn-primary">Lisa ostukorvi</button>
                 </div>
@@ -83,9 +92,9 @@
             <!-- Product 4 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="images/product4.jpg" alt="Toode 4" class="product-image">
-                    <h3>Toode 4</h3>
-                    <p>Toote 4 kirjeldus</p>
+                    <img src="product 4.jpg" alt="Toode 4" class="product-image">
+                    <h3>Richard Mille Tourbillon</h3>
+                    <p>Mudeli number RM 47</p>
                     <p class="fw-bold">€129.99</p>
                     <button class="btn btn-primary">Lisa ostukorvi</button>
                 </div>
@@ -93,9 +102,9 @@
             <!-- Product 5 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="images/product5.jpg" alt="Toode 5" class="product-image">
-                    <h3>Toode 5</h3>
-                    <p>Toote 5 kirjeldus</p>
+                    <img src="product 5.jpg" alt="Toode 5" class="product-image">
+                    <h3>Omega Seamaster Diver 300M</h3>
+                    <p>Mudeli number 210.30.42.20.03.001</p>
                     <p class="fw-bold">€179.99</p>
                     <button class="btn btn-primary">Lisa ostukorvi</button>
                 </div>
@@ -103,9 +112,9 @@
             <!-- Product 6 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="images/product6.jpg" alt="Toode 6" class="product-image">
-                    <h3>Toode 6</h3>
-                    <p>Toote 6 kirjeldus</p>
+                    <img src="product 6.jpg" alt="Toode 6" class="product-image">
+                    <h3>Breitling Navitimer B01 Chronograph</h3>
+                    <p>Mudeli number AB0127211C1A1</p>
                     <p class="fw-bold">€159.99</p>
                     <button class="btn btn-primary">Lisa ostukorvi</button>
                 </div>
@@ -113,9 +122,9 @@
             <!-- Product 7 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="images/product7.jpg" alt="Toode 7" class="product-image">
-                    <h3>Toode 7</h3>
-                    <p>Toote 7 kirjeldus</p>
+                    <img src="product 7.jpg" alt="Toode 7" class="product-image">
+                    <h3>Omega Constellation</h3>
+                    <p>Mudeli number 131.10.39.20.01.001</p>
                     <p class="fw-bold">€89.99</p>
                     <button class="btn btn-primary">Lisa ostukorvi</button>
                 </div>
@@ -123,9 +132,9 @@
             <!-- Product 8 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="images/product8.jpg" alt="Toode 8" class="product-image">
-                    <h3>Toode 8</h3>
-                    <p>Toote 8 kirjeldus</p>
+                    <img src="product 8.jpg" alt="Toode 8" class="product-image">
+                    <h3>Breitling Superocean Heritage</h3>
+                    <p>Mudeli number AB2020161C1A1</p>
                     <p class="fw-bold">€139.99</p>
                     <button class="btn btn-primary">Lisa ostukorvi</button>
                 </div>
@@ -133,9 +142,9 @@
             <!-- Product 9 -->
             <div class="col-md-4">
                 <div class="product-card">
-                    <img src="images/product9.jpg" alt="Toode 9" class="product-image">
-                    <h3>Toode 9</h3>
-                    <p>Toote 9 kirjeldus</p>
+                    <img src="product 9.jpg" alt="Toode 9" class="product-image">
+                    <h3>Omega De Ville Prestige</h3>
+                    <p>Mudeli number 424.13.40.20.02.001</p>
                     <p class="fw-bold">€169.99</p>
                     <button class="btn btn-primary">Lisa ostukorvi</button>
                 </div>
@@ -256,6 +265,7 @@
                     updateCartDisplay();
                 }
             }
+
         }
 
         // Remove item from cart
